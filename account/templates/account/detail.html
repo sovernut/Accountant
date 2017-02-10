@@ -1,0 +1,55 @@
+<style>
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table, td, th {
+    border: 1px solid black;
+    padding: 15px;
+
+}
+th {
+    height: 40px;
+    background-color: #4CAF50;
+    color: white;
+}
+tr:hover{background-color:#f5f5f5}
+</style>
+
+<h1>Account Name : {{ account.account_name }}</h1> <a href="#">Edit Name</a>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<table border="1">
+<form action="{% url 'account:addtrans' account.id %}" method="post">
+{% csrf_token %}
+<tr>
+    <th>เวลา</th>
+    <th>รายละเอียด</th>
+    <th>รายรับ</th>
+    <th>รายจ่าย</th>
+</tr>
+
+{# ------------ตารางรายรับรายจ่าย---------------------------- #}
+{% for detail_list in account.transaction_set.all %}
+    <tr><td width="20%">{{ detail_list.date }}</td><td>{{ detail_list.detail }}</td>
+    {% if detail_list.value < 0 %} <td></td><td>{{ detail_list.value }}</td>
+    {% else %} <td>{{ detail_list.value }}</td><td></td>{% endif %}</tr>
+{% endfor %}
+<tr style="background-color: #4CAF50;color: white;"><td>Total money : {{ account.total }}</td></tr>
+</table>
+<br>
+รายละเอียด
+<br>
+<input type="text" name="detail"/>
+<br>จำนวนเงิน
+<br>
+<input type="number" name="value"/><br>
+ชนิด
+<select name="t_type">
+  <option value="income">รายรับ</option>
+  <option value="outcome">รายจ่าย</option>
+</select><br>
+<input type="submit" value="Add transaction" />
+</form>
+<br><a href="{% url 'account:index' %}">Back to main</a>
