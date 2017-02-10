@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
-
+from django.utils import timezone # for adding transaction list
 from .models import Account, Transaction
 
 class IndexView(generic.ListView):
@@ -17,8 +17,22 @@ class DetailView(generic.DetailView):
     template_name = 'account/detail.html'
 
 def add_trans(request,account_id):
-    detail = request.POST['detail']
-    value = request.POST['value']
-    ttype = request.POST['t_type']
-    content = {'detail':detail,'value':value,'ttype':ttype}
+    account = get_object_or_404(Account, pk=account_id)
+    error_message = 0
+    try:
+        get_detail = request.POST['detail']
+        get_value = int(request.POST['value'])
+        get_ttype = request.POST['t_type']
+    except:
+        get_detail = "None"
+        get_value = "None"
+        get_ttype = "None"
+        error_message = 1
+    else:
+        if get_ttype == 'expense':
+            get_value = -1*get_value
+        account.total = account.total + get_value
+        account.save()
+        account.transaction_set.create(detail=get_detail,value=get_value,date=timezone.now())
+    content = {'detail':get_detail,'value':get_value,'ttype':get_ttype,'error_message':error_message,'account_id':account_id}
     return render(request, 'account/addtrans.html', content)

@@ -1,4 +1,10 @@
-Hello this is a add
-{{ detail }}
-{{ value }}
-{{ ttype }}
+{% if error_message %}
+<h1>Something wrong !</h1><br>
+{% else %}
+<h1>You've add transaction</h1><br>
+{{ detail }}<br>
+{{ value }}<br>
+{{ ttype }}<br>
+{% endif %}
+
+<a href="{% url 'account:detail' account_id %}">Back to detail</a>
