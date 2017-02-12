@@ -1,0 +1,8 @@
+<form action="{% url 'account:editname' account.id %}" method="post">
+{% csrf_token %}
+<h1>Edit Account name : </h1>
+Name:
+<br>
+<input type="text" name="detail"/>
+<input type="submit" value="Edit !" />
+</form>

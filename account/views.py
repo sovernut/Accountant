@@ -36,3 +36,14 @@ def add_trans(request,account_id):
         account.transaction_set.create(detail=get_detail,value=get_value,date=timezone.now())
     content = {'detail':get_detail,'value':get_value,'ttype':get_ttype,'error_message':error_message,'account_id':account_id}
     return render(request, 'account/addtrans.html', content)
+
+def editname(request,account_id):
+    account = get_object_or_404(Account, pk=account_id)
+    try:
+        get_name = request.POST['name']
+    except:
+        error = 1
+    else:
+        account.account_name = get_name
+        account.save()
+    return HttpResponseRedirect(reverse('account:detail', args=(account_id,)))

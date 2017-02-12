@@ -17,7 +17,7 @@ th {
 tr:hover{background-color:#f5f5f5}
 </style>
 
-<h1>Account Name : {{ account.account_name }}</h1> <a href="#">Edit Name</a>
+<h1>Account Name : {{ account.account_name }}</h1>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 <table border="1">
@@ -39,6 +39,9 @@ tr:hover{background-color:#f5f5f5}
 <tr style="background-color: #4CAF50;color: white;"><td>Total money : {{ account.total }}</td></tr>
 </table>
 <br>
+
+{# Add Transaction #}
+<h1>Add transaction : </h1>
 รายละเอียด
 <br>
 <input type="text" name="detail"/>
@@ -52,4 +55,14 @@ tr:hover{background-color:#f5f5f5}
 </select><br>
 <input type="submit" value="Add transaction" />
 </form>
-<br><a href="{% url 'account:index' %}">Back to main</a>
+{# Edit Name #}
+<form action="{% url 'account:editname' account.id %}" method="post">
+{% csrf_token %}
+<h1>Edit Account name : </h1>
+Name:
+<br>
+<input type="text" name="name"/>
+<input type="submit" value="Edit !" />
+</form>
+
+<br><br><a href="{% url 'account:index' %}"><input type="submit" value="Select Account" /></a>
