@@ -40,8 +40,14 @@ tr:hover{background-color:#f5f5f5}
 </table>
 <br>
 
-{# Add Transaction #}
-<h1>Add transaction : </h1>
+
+<table>
+    <tr>
+{# ------------------Add Transaction------------------ #}
+<th><h1>Add Transaction</h1></th>
+<th><h1>Edit Name</h1></th></tr>
+<tr>
+<td>
 รายละเอียด
 <br>
 <input type="text" name="detail"/>
@@ -54,15 +60,18 @@ tr:hover{background-color:#f5f5f5}
   <option value="expense">รายจ่าย</option>
 </select><br>
 <input type="submit" value="Add transaction" />
-</form>
-{# Edit Name #}
-<form action="{% url 'account:editname' account.id %}" method="post">
+</form></td>
+{# ------------------Edit Name------------------ #}
+<td><form action="{% url 'account:editname' account.id %}" method="post">
 {% csrf_token %}
 <h1>Edit Account name : </h1>
 Name:
 <br>
 <input type="text" name="name"/>
 <input type="submit" value="Edit !" />
-</form>
+</form></td>
+    </tr>
+</table>
+
 
 <br><br><a href="{% url 'account:index' %}"><input type="submit" value="Select Account" /></a>
