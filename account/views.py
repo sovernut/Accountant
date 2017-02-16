@@ -16,6 +16,18 @@ class DetailView(generic.DetailView):
     model = Account
     template_name = 'account/detail.html'
 
+def add_account(request):
+    try:
+        get_name = request.POST['account_name']
+    except:
+        error_msg = "Error !"
+    else:
+        a = Account(account_name=get_name,total=0)
+        a.save()
+    account_list = Account.objects.order_by('-account_name')[:5]
+    return render(request,'account/index.html',{'account_list':account_list})
+
+    
 def add_trans(request,account_id):
     account = get_object_or_404(Account, pk=account_id)
     error_message = 0

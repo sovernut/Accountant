@@ -1,10 +1,43 @@
+<style>
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table, td, th {
+    border: 1px solid black;
+    padding: 15px;
+}
+th {
+    height: 40px;
+    background-color: #4CAF50;
+    color: white;
+}
+</style>
+    <table>
+<center>
 {% if account_list %}
-    <h1>Select Account</h1>
-    <ul>
-    {% for account in account_list %}
-        <li><a href="{% url 'account:detail' account.id %}">{{ account.account_name }}</a></li>
+    <tr><th><h1>Select Account</h1></th></tr>
+
+    {% for a in account_list %}
+        <tr><td><a href="{% url 'account:detail' a.id %}">{{ a.account_name }}
+        (Total money : {{ a.total }})</a></td></tr>
     {% endfor %}
-    </ul>
+
 {% else %}
     <p>No account are available.</p>
 {% endif %}
+
+{# ------------------Add Account ------------------ #}
+<form action="{% url 'account:add_account' %}" method="post">
+{% csrf_token %}
+<th><h1>Add Account</h1></th>
+<tr>
+<td>
+<b>Account Name
+<br>
+<input type="text" name="account_name"/><br>
+<input type="submit" value="Add Accout" />
+</form></td>
+</table>
+</center>

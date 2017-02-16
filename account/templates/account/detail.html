@@ -18,7 +18,7 @@ th {
 }
 tr:hover{background-color:#f5f5f5}
 </style>
-
+<body style="background-color: #bcfedd">
 <h1>Account Name : {{ account.account_name }}</h1>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
@@ -53,19 +53,17 @@ tr:hover{background-color:#f5f5f5}
 <th><h1>Edit Name</h1></th></tr>
 <tr>
 <td>
-รายละเอียด
+<b>รายละเอียด
 <br>
 <input type="text" name="detail"/>
 <br>จำนวนเงิน
 <br>
 <input type="number" name="value"/><br>
-ชนิด
-<select name="t_type">
-  <option value="income">รายรับ</option>
-  <option value="expense">รายจ่าย</option>
-</select><br>
+ชนิด<br>
+  <input type="radio" name="t_type" value="income"> รายรับ
+  <input type="radio" name="t_type" value="expense"> รายจ่าย<br>
 <input type="submit" value="Add transaction" />
-</form></td>
+</form></td></b>
 {# ------------------Edit Name------------------ #}
 <td><form action="{% url 'account:editname' account.id %}" method="post">
 {% csrf_token %}
@@ -79,4 +77,7 @@ Name:
 </table>
 
 
+
+
 <br><br><a href="{% url 'account:index' %}"><input type="submit" value="Select Account" /></a>
+</body>
