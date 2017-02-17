@@ -17,11 +17,11 @@ th {
     <table>
 <center>
 {% if account_list %}
-    <tr><th><h1>Select Account</h1></th></tr>
-
+    <tr><h1>Select Account</h1></tr>
+    <tr><th>Account Name</th><th>Total</th></tr>
     {% for a in account_list %}
-        <tr><td><a href="{% url 'account:detail' a.id %}">{{ a.account_name }}
-        (Total money : {{ a.total }})</a></td></tr>
+        <tr><td><a href="{% url 'account:detail' a.id %}">{{ a.account_name }}</td>
+        <td>{{ a.total }}</td></tr></a>
     {% endfor %}
 
 {% else %}
