@@ -24,19 +24,19 @@ def add_account(request):
     else:
         a = Account(account_name=get_name,total=0)
         a.save()
-    account_list = Account.objects.order_by('-account_name')[:5]
-    return render(request,'account/index.html',{'account_list':account_list})
+    return HttpResponseRedirect(reverse('account:index'))
 
 def del_account(request):
+    error_msg = ""
     try:
         get_id = request.POST['account_id']
     except:
-        error_msg = "Error !"
+        error_msg = "You didn't select any account !"
     else:
         a = Account.objects.get(id=get_id)
         a.delete()
     account_list = Account.objects.order_by('-account_name')[:5]
-    return render(request,'account/index.html',{'account_list':account_list})    
+    return render(request,'account/index.html',{'account_list':account_list,'error_msg':error_msg})    
     
 def add_trans(request,account_id):
     account = get_object_or_404(Account, pk=account_id)

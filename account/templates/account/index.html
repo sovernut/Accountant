@@ -27,7 +27,7 @@ th {
     {% endfor %}
 
 {% csrf_token %} 
-<tr><td><input type="submit" value="Delete Selected Accout" /></td></tr>
+<tr><td><input type="submit" value="Delete Selected Accout" /> {{ error_msg }}</td></tr>
 </form>
 {% else %}
     <p>No account are available.</p>
