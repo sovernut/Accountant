@@ -19,11 +19,16 @@ th {
 {% if account_list %}
     <tr><h1>Select Account</h1></tr>
     <tr><th>Account Name</th><th>Total</th></tr>
+    <form action="{% url 'account:del_account' %}" method="post">  
     {% for a in account_list %}
-        <tr><td><a href="{% url 'account:detail' a.id %}">{{ a.account_name }}</td>
+        <tr><td><input type="radio" name="account_id" value="{{ a.id }}" />
+        <a href="{% url 'account:detail' a.id %}">{{ a.account_name }}</td>
         <td>{{ a.total }}</td></tr></a>
     {% endfor %}
 
+{% csrf_token %} 
+<tr><td><input type="submit" value="Delete Selected Accout" /></td></tr>
+</form>
 {% else %}
     <p>No account are available.</p>
 {% endif %}

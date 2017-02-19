@@ -27,6 +27,16 @@ def add_account(request):
     account_list = Account.objects.order_by('-account_name')[:5]
     return render(request,'account/index.html',{'account_list':account_list})
 
+def del_account(request):
+    try:
+        get_id = request.POST['account_id']
+    except:
+        error_msg = "Error !"
+    else:
+        a = Account.objects.get(id=get_id)
+        a.delete()
+    account_list = Account.objects.order_by('-account_name')[:5]
+    return render(request,'account/index.html',{'account_list':account_list})    
     
 def add_trans(request,account_id):
     account = get_object_or_404(Account, pk=account_id)
