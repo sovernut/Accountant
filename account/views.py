@@ -22,8 +22,9 @@ def add_account(request):
     except:
         error_msg = "Error !"
     else:
-        a = Account(account_name=get_name,total=0)
-        a.save()
+        if get_name.isalpha():
+            a = Account(account_name=get_name,total=0)
+            a.save()
     return HttpResponseRedirect(reverse('account:index'))
 
 def del_account(request):
