@@ -2,10 +2,16 @@ h1 {
     color: #ff9999;
     text-shadow: 1px 1px #FF0000;
     border-left: 6px solid #ed4b5c;
+    padding: 10px;
     background-color: #301e1f;
+}
+@font-face {
+    font-family: myFirstFont;
+    src: url(Boon-Regular.ttf);
 }
 body {
     background-image: url("ice.jpg");
+    font-family: myFirstFont;
 }
 ul li {
     color: #ff9999;
