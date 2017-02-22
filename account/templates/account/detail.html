@@ -12,6 +12,8 @@
 <table border="1">
 <form action="{% url 'account:addtrans' account.id %}" method="post">
 {% csrf_token %}
+
+{% if account.transaction_set.all %}
 <tr>
     <th>เวลา</th>
     <th>รายละเอียด</th>
@@ -30,6 +32,9 @@
 {% endfor %}
 <tr style="background-color: #4CAF50;color: white;"><td>Total money : {{ account.total }}</td></tr>
 </table>
+{% else %}
+<h1 align="center">There's no transactions.</h1>
+{% endif %}
 <br>
 
 

@@ -11,8 +11,8 @@ a {
     src: url(Boon-Regular.ttf);
 }
 body {
-    background-image: url("ice.jpg");
     font-family: myFirstFont;
+    background-color: #000000;
 }
 table {
     border-collapse: collapse;
@@ -22,7 +22,7 @@ table {
 }
 
 table, td, th {
-    border: 0px dotted white;
+    border: 1px dashed white;
     padding: 15px;
 }
 th {
