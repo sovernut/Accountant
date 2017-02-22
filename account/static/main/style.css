@@ -1,0 +1,19 @@
+h1 {
+    color: #ff9999;
+    text-shadow: 1px 1px #FF0000;
+    border-left: 6px solid #ed4b5c;
+    background-color: #301e1f;
+}
+body {
+    background-image: url("ice.jpg");
+}
+ul li {
+    color: #ff9999;
+    border: 1px solid #ff9999;
+    padding: 10px;
+    border-radius: 6px;
+}
+ul li:hover {
+    color: #ffffff;
+    background-color: #f4848a;
+}

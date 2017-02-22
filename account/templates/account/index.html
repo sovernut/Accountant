@@ -1,20 +1,10 @@
-<style>
-table {
-    border-collapse: collapse;
-    width: 100%;
-}
+{% load static %}
 
-table, td, th {
-    border: 1px solid black;
-    padding: 15px;
-}
-th {
-    height: 40px;
-    background-color: #4CAF50;
-    color: white;
-}
-</style>
-    <table>
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'account/style.css' %}" />
+</head>
+<body>
+<table>
 <center>
 {% if account_list %}
     <tr><h1>Select Account</h1></tr>
@@ -27,7 +17,7 @@ th {
     {% endfor %}
 
 {% csrf_token %} 
-<tr><td><input type="submit" value="Delete Selected Accout" /> {{ error_msg }}</td></tr>
+<tr><td><input type="submit" class="button" style="background-color:#db4e4e;" value="Delete Selected Accout" /> {{ error_msg }}</td></tr>
 </form>
 {% else %}
     <p>No account are available.</p>
@@ -41,8 +31,10 @@ th {
 <td>
 <b>Account Name
 <br>
-<input type="text" name="account_name"/><br>
-<input type="submit" value="Add Accout" />
+<input type="text" class="textinput" name="account_name"/><br>
+<input type="submit" class="button" value="Add Accout" />
 </form></td>
 </table>
 </center>
+<a href="{% url 'index' %}" class="button" style="background-color:#4747d1;">Back to Home</a>
+</body>
