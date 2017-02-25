@@ -9,16 +9,18 @@
 {% if account_list %}
     <tr><h1>Select Account</h1></tr>
     <tr><th>Account Name</th><th>Total</th></tr>
-    <form action="{% url 'account:del_account' %}" method="post">  
     {% for a in account_list %}
+        <form action="{% url 'account:del_account' %}" method="post"> 
         <tr><td><input type="radio" name="account_id" value="{{ a.id }}" />
         <a href="{% url 'account:detail' a.id %}">{{ a.account_name }}</td>
         <td>{{ a.total }}</td></tr></a>
     {% endfor %}
-
 {% csrf_token %} 
-<tr><td><input type="submit" class="button" style="background-color:#db4e4e;" value="Delete Selected Accout" /> {{ error_msg }}</td></tr>
+<tr><td>
+<input type="submit" class="button" onclick="return confirm('Are you sure?')" style="background-color:#db4e4e;" value="Delete Selected Accout" /> {{ error_msg }}
 </form>
+</td></tr>
+
 {% else %}
     <p>No account are available.</p>
 {% endif %}

@@ -6,6 +6,8 @@ from django.views import generic
 from django.utils import timezone # for adding transaction list
 from .models import Account, Transaction
 
+import csv
+
 class IndexView(generic.ListView):
     template_name = 'account/index.html'
 
@@ -37,7 +39,8 @@ def del_account(request):
         a = Account.objects.get(id=get_id)
         a.delete()
     account_list = Account.objects.order_by('-account_name')[:5]
-    return render(request,'account/index.html',{'account_list':account_list,'error_msg':error_msg})    
+    return render(request,'account/index.html',{'account_list':account_list,'error_msg':error_msg})
+    
     
 def add_trans(request,account_id):
     account = get_object_or_404(Account, pk=account_id)
@@ -70,3 +73,29 @@ def editname(request,account_id):
         account.account_name = get_name
         account.save()
     return HttpResponseRedirect(reverse('account:detail', args=(account_id,)))
+    
+def export_csv(request,account_id):
+    account = get_object_or_404(Account, pk=account_id)
+    '''content = ""
+    with open('data.csv','w') as csvfile:
+        fieldnames = ['date','detail','value']
+        writer = csv.DictWriter(csvfile,fieldnames=fieldnames)
+        writer.writeheader()
+        for a in account.transaction_set.all().values():
+            detail = str(a['detail'])
+            date = str(a['date'])[:10]
+            value = str(a['value'])
+            content += date + "," + detail + "," + value + "<br>"
+            writer.writerow({'date': date, 'detail': detail,'value':value})'''
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="data.csv"'
+    writer = csv.DictWriter(response,fieldnames=['date','detail','value'])
+    writer.writeheader()
+    for a in account.transaction_set.all().values():
+            detail = str(a['detail'])
+            date = str(a['date'])[:10]
+            value = str(a['value'])
+            writer.writerow({'date': date, 'detail': detail,'value':value})
+
+    return response
+    #return HttpResponse("Hi <> "+  account.account_name + "<br>"+ content)

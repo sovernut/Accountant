@@ -69,7 +69,8 @@ Name:
 </table>
 
 
-
-
+{% if account.transaction_set.all %}
+<br><a href="{% url 'account:exportcsv' account.id %}"><input type="submit" class="button" value="Export CSV" /></a>
+{% endif %}
 <br><br><a href="{% url 'account:index' %}"><input type="submit" class="button" style="background-color:#4747d1;" value="Select Account" /></a>
 </body>

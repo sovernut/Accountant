@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^acc/(?P<pk>[0-9]+)/$', views.DetailView.as_view(), name='detail'),
     url(r'^acc/add_trans/(?P<account_id>[0-9]+)$',views.add_trans,name='addtrans'),
     url(r'^acc/editname/(?P<account_id>[0-9]+)$',views.editname,name='editname'),
+    url(r'^acc/export/(?P<account_id>[0-9]+)$', views.export_csv, name='exportcsv'),
 ]

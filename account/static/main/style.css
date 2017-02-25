@@ -5,6 +5,9 @@ h1 {
     padding: 10px;
     background-color: #301e1f;
 }
+a:link {
+    text-decoration: none;
+}
 @font-face {
     font-family: myFirstFont;
     src: url(Boon-Regular.ttf);
@@ -23,3 +26,4 @@ ul li:hover {
     color: #ffffff;
     background-color: #f4848a;
 }
+
