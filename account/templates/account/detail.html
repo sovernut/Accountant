@@ -1,9 +1,10 @@
 {% load mul %}
 
 {% load static %}
+{% static "" as path %}
 
 <head>
-<link rel="stylesheet" type="text/css" href="{% static 'account/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{{ path }}{{ theme }}" />
 </head>
 <body>
 <h1>Account Name : {{ account.account_name }}</h1>
@@ -23,8 +24,9 @@
 
 {# ------------ตารางรายรับรายจ่าย---------------------------- #}
 {% for detail_list in account.transaction_set.all %}
-    <tr><td width="20%">{{ detail_list.date }}</td><td>{{ detail_list.detail }}</td>
+    <tr><td width="20%">{{ detail_list.date|date:'Y-m-d' }}</td><td>{{ detail_list.detail }}</td>
     {% if detail_list.value < 0 %} <td></td>
+
     <td style="color:red;">{{ detail_list.value|mul:-1 }}</td>
     {% else %} 
     <td style="color:9698ea;">{{ detail_list.value }}</td><td></td>
@@ -70,7 +72,7 @@ Name:
 
 
 {% if account.transaction_set.all %}
-<br><a href="{% url 'account:exportcsv' account.id %}"><input type="submit" class="button" value="Export CSV" /></a>
+<br><a href="{% url 'account:exportcsv' account.id %}" class="button">Export CSV</a>
 {% endif %}
 <br><br><a href="{% url 'account:index' %}"><input type="submit" class="button" style="background-color:#4747d1;" value="Select Account" /></a>
 </body>

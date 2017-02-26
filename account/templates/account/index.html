@@ -1,11 +1,14 @@
 {% load static %}
-
 <head>
-<link rel="stylesheet" type="text/css" href="{% static 'account/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static "" %}{{ theme }}" />
 </head>
 <body>
+{# ------------------change theme ------------------ #}
+<a href="/account/switch" class="button">switch theme</a>
 <table>
 <center>
+
+{# ------------------Show Account ------------------ #}
 {% if account_list %}
     <tr><h1>Select Account</h1></tr>
     <tr><th>Account Name</th><th>Total</th></tr>
@@ -24,6 +27,9 @@
 {% else %}
     <p>No account are available.</p>
 {% endif %}
+
+
+
 
 {# ------------------Add Account ------------------ #}
 <form action="{% url 'account:add_account' %}" method="post">

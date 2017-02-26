@@ -8,16 +8,28 @@ from .models import Account, Transaction
 
 import csv
 
+theme = 'account/stylewhite.css'
+
 class IndexView(generic.ListView):
     template_name = 'account/index.html'
-
+    
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        context.update({'theme': theme})
+        return context
+    
     def get_queryset(self):
         return Account.objects.order_by('-account_name')[:5]
 
 class DetailView(generic.DetailView):
     model = Account
     template_name = 'account/detail.html'
-
+    
+    def get_context_data(self, **kwargs):
+        context = super(DetailView, self).get_context_data(**kwargs)
+        context.update({'theme': theme})
+        return context
+        
 def add_account(request):
     try:
         get_name = request.POST['account_name']
@@ -38,8 +50,7 @@ def del_account(request):
     else:
         a = Account.objects.get(id=get_id)
         a.delete()
-    account_list = Account.objects.order_by('-account_name')[:5]
-    return render(request,'account/index.html',{'account_list':account_list,'error_msg':error_msg})
+    return HttpResponseRedirect(reverse('account:index'))
     
     
 def add_trans(request,account_id):
@@ -76,26 +87,21 @@ def editname(request,account_id):
     
 def export_csv(request,account_id):
     account = get_object_or_404(Account, pk=account_id)
-    '''content = ""
-    with open('data.csv','w') as csvfile:
-        fieldnames = ['date','detail','value']
-        writer = csv.DictWriter(csvfile,fieldnames=fieldnames)
-        writer.writeheader()
-        for a in account.transaction_set.all().values():
-            detail = str(a['detail'])
-            date = str(a['date'])[:10]
-            value = str(a['value'])
-            content += date + "," + detail + "," + value + "<br>"
-            writer.writerow({'date': date, 'detail': detail,'value':value})'''
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="data.csv"'
     writer = csv.DictWriter(response,fieldnames=['date','detail','value'])
     writer.writeheader()
     for a in account.transaction_set.all().values():
-            detail = str(a['detail'])
-            date = str(a['date'])[:10]
-            value = str(a['value'])
-            writer.writerow({'date': date, 'detail': detail,'value':value})
-
+        detail = str(a['detail'])
+        date = str(a['date'])[:10]
+        value = str(a['value'])
+        writer.writerow({'date': date, 'detail': detail,'value':value})
     return response
-    #return HttpResponse("Hi <> "+  account.account_name + "<br>"+ content)
+
+def switch(request):
+    global theme
+    if theme == 'account/stylewhite.css':
+        theme = 'account/style.css'
+    else:
+        theme = 'account/stylewhite.css'
+    return HttpResponseRedirect(reverse('account:index'))
