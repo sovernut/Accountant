@@ -1,0 +1,8 @@
+<form action="{% url 'account:importcsv' account_id %}" method="post" enctype="multipart/form-data">
+{% csrf_token %} 
+{{ form }}
+<input type="submit" value="Upload"/>
+</form>
+import will overwrite all your transaction. <br>
+<br>
+<a href="{% url 'account:detail' account_id %}">Back to account</a>

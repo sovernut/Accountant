@@ -7,7 +7,40 @@ from django.utils import timezone # for adding transaction list
 from .models import Account, Transaction
 
 import csv
+import codecs
 
+# +++++++++++ upload csv file+++++++++++++++
+from .forms import UploadFileForm
+
+def upload_file(request,account_id):
+    content = ""
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            content = "" 
+            file = request.FILES['file']
+            csvfile = csv.DictReader(codecs.iterdecode(file, 'utf-8'))
+            overwrite_transaction(csvfile,account_id)
+            # account saving
+            
+    else:
+        form = UploadFileForm()
+    return render(request, 'account/upload.html', {'form': form,
+                            'content':content,
+                            'account_id':account_id})
+def overwrite_transaction(csvfile,account_id):
+    account = get_object_or_404(Account, pk=account_id)
+    account.total = 0
+    for a in account.transaction_set.all(): # delete old data
+        a.delete()
+    for row in csvfile: # save new data
+        account.total = account.total + int(row['value'])
+        account.transaction_set.create(detail=row['detail'],
+                                        value=int(row['value']),
+                                        date=row['date'])
+    account.save()
+  
+# ---------- end upload csvfile -----------
 theme = 'account/stylewhite.css'
 
 class IndexView(generic.ListView):
@@ -29,7 +62,7 @@ class DetailView(generic.DetailView):
         context = super(DetailView, self).get_context_data(**kwargs)
         context.update({'theme': theme})
         return context
-        
+    
 def add_account(request):
     try:
         get_name = request.POST['account_name']
@@ -71,9 +104,10 @@ def add_trans(request,account_id):
         account.total = account.total + get_value
         account.save()
         account.transaction_set.create(detail=get_detail,value=get_value,date=timezone.now())
-    content = {'detail':get_detail,'value':get_value,'ttype':get_ttype,'error_message':error_message,'account_id':account_id}
-    return render(request, 'account/addtrans.html', content)
-
+    #content = {'detail':get_detail,'value':get_value,'ttype':get_ttype,'error_message':error_message,'account_id':account_id}
+    #return render(request, 'account/addtrans.html', content)
+    return HttpResponseRedirect(reverse('account:detail', args=(account_id,)))
+    
 def editname(request,account_id):
     account = get_object_or_404(Account, pk=account_id)
     try:
@@ -88,12 +122,13 @@ def editname(request,account_id):
 def export_csv(request,account_id):
     account = get_object_or_404(Account, pk=account_id)
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="data.csv"'
+    filename = account.account_name + "_data.csv"
+    response['Content-Disposition'] = "attachment; filename="+filename
     writer = csv.DictWriter(response,fieldnames=['date','detail','value'])
     writer.writeheader()
     for a in account.transaction_set.all().values():
         detail = str(a['detail'])
-        date = str(a['date'])[:10]
+        date = str(a['date'])
         value = str(a['value'])
         writer.writerow({'date': date, 'detail': detail,'value':value})
     return response
@@ -105,3 +140,4 @@ def switch(request):
     else:
         theme = 'account/stylewhite.css'
     return HttpResponseRedirect(reverse('account:index'))
+    

@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^acc/editname/(?P<account_id>[0-9]+)$',views.editname,name='editname'),
     url(r'^acc/export/(?P<account_id>[0-9]+)$', views.export_csv, name='exportcsv'),
     url(r'^switch$', views.switch, name='switch'),
+    url(r'^importcsv/(?P<account_id>[0-9]+)$', views.upload_file, name='importcsv'),
 ]
