@@ -21,8 +21,7 @@ def upload_file(request,account_id):
             file = request.FILES['file']
             csvfile = csv.DictReader(codecs.iterdecode(file, 'utf-8'))
             overwrite_transaction(csvfile,account_id)
-            # account saving
-            
+            return HttpResponseRedirect(reverse('account:detail', args=(account_id,)))
     else:
         form = UploadFileForm()
     return render(request, 'account/upload.html', {'form': form,
@@ -52,7 +51,7 @@ class IndexView(generic.ListView):
         return context
     
     def get_queryset(self):
-        return Account.objects.order_by('-account_name')[:5]
+        return Account.objects.order_by('-account_name') # [:5]
 
 class DetailView(generic.DetailView):
     model = Account
